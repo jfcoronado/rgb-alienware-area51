@@ -39,6 +39,9 @@ marker="$install_dir/.managed-by-alienware-lights"
 for command in python omarchy install; do
   command -v "$command" >/dev/null || { echo "Missing required command: $command" >&2; exit 1; }
 done
+for command in dbus-monitor systemctl; do
+  command -v "$command" >/dev/null || { echo "Missing required command: $command" >&2; exit 1; }
+done
 if (( install_udev )) && ! command -v sudo >/dev/null; then
   echo "Missing sudo; rerun with --no-udev or install the device rule manually." >&2
   exit 1
@@ -65,6 +68,11 @@ for hook in "$HOME/.config/omarchy/hooks/theme-set.d/90-alienware-lights" \
     exit 1
   fi
 done
+resume_unit="$HOME/.config/systemd/user/alienware-lights-resume.service"
+if [[ -f "$resume_unit" ]] && ! grep -q 'Restore Alienware lighting after resume' "$resume_unit"; then
+  echo "$resume_unit belongs to another customization; refusing to overwrite it." >&2
+  exit 1
+fi
 
 install -d -m 0755 "$install_dir" "$bin_dir" "$applications_dir" "$state_dir"
 if [[ ! -f "$state_dir/state.json" && -f "$source_dir/.last-color.json" ]]; then
@@ -77,6 +85,8 @@ install -m 0644 "$source_dir/alienrgb.py" "$source_dir/keyboard_test.py" \
   "$source_dir/lighting_service.py" "$source_dir/lighting_cli.py" \
   "$source_dir/lighting_app.py" "$source_dir/theme_sync.py" "$install_dir/"
 install -m 0755 "$source_dir/uninstall.sh" "$install_dir/uninstall.sh"
+install -m 0755 "$source_dir/omarchy/alienware-lights-resume" \
+  "$install_dir/alienware-lights-resume"
 printf '%s\n' 'Installed by Alienware Lights. Safe to update with install.sh.' >"$marker"
 
 cat >"$bin_dir/alienlights" <<'EOF'
@@ -99,14 +109,24 @@ cat >"$bin_dir/alienlights-uninstall" <<'EOF'
 # Managed by Alienware Lights installer.
 exec "${XDG_DATA_HOME:-$HOME/.local/share}/alienware-lights/uninstall.sh" "$@"
 EOF
+cat >"$bin_dir/alienlights-resume-monitor" <<'EOF'
+#!/bin/bash
+# Managed by Alienware Lights installer.
+exec "${XDG_DATA_HOME:-$HOME/.local/share}/alienware-lights/alienware-lights-resume" "$@"
+EOF
 chmod 0755 "$bin_dir/alienlights" "$bin_dir/alienware-lights-gui" \
-  "$bin_dir/alienlights-theme-sync" "$bin_dir/alienlights-uninstall"
+  "$bin_dir/alienlights-theme-sync" "$bin_dir/alienlights-uninstall" \
+  "$bin_dir/alienlights-resume-monitor"
 
 install -m 0644 "$source_dir/Alienware Lights.desktop" \
   "$applications_dir/alienware-lights.desktop"
 
 omarchy hook install theme-set "$source_dir/omarchy/90-alienware-lights"
 omarchy hook install post-boot "$source_dir/omarchy/90-alienware-lights"
+install -d -m 0755 "$HOME/.config/systemd/user"
+install -m 0644 "$source_dir/omarchy/alienware-lights-resume.service" "$resume_unit"
+systemctl --user daemon-reload
+systemctl --user enable --now alienware-lights-resume.service
 
 if (( install_udev )); then
   echo "Administrator access is needed once to install the controller-access rule."

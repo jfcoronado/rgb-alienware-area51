@@ -29,11 +29,15 @@ if [[ -e "$rule" ]]; then
     echo "Leaving $rule in place because it no longer matches this installation." >&2
   fi
 fi
+systemctl --user disable --now alienware-lights-resume.service >/dev/null 2>&1 || true
+rm -f "$HOME/.config/systemd/user/alienware-lights-resume.service"
+systemctl --user daemon-reload
 
 rm -f "$HOME/.local/bin/alienlights"
 rm -f "$HOME/.local/bin/alienware-lights-gui"
 rm -f "$HOME/.local/bin/alienlights-theme-sync"
 rm -f "$HOME/.local/bin/alienlights-uninstall"
+rm -f "$HOME/.local/bin/alienlights-resume-monitor"
 rm -f "$data_home/applications/alienware-lights.desktop"
 if [[ -f "$marker" ]]; then
   rm -rf -- "$install_dir"

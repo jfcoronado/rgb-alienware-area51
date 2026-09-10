@@ -1,0 +1,14 @@
+[Unit]
+Description=Restore Alienware lighting after resume
+After=dbus.socket
+Requires=dbus.socket
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/alienlights-resume-monitor
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=graphical-session.target

@@ -1,0 +1,14 @@
+#!/bin/bash
+set -u
+
+# login1 emits PrepareForSleep(false) after the system has resumed. Keep
+# listening for future cycles; systemd restarts this process if D-Bus exits.
+/usr/bin/dbus-monitor --system \
+  "type='signal',sender='org.freedesktop.login1',interface='org.freedesktop.login1.Manager',member='PrepareForSleep'" |
+  while IFS= read -r line; do
+    if [[ $line == *"boolean false"* ]]; then
+      sleep 2
+      "$HOME/.local/bin/alienlights-theme-sync" --automatic 2>&1 |
+        /usr/bin/logger -t alienware-lights
+    fi
+  done

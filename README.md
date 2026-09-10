@@ -29,9 +29,10 @@ Run the same command again to update an existing installation. The installer:
 1. Copies the application to `~/.local/share/alienware-lights`.
 2. Adds the `alienlights` command and graphical launcher.
 3. Installs Omarchy `theme-set` and `post-boot` user hooks.
-4. Requests administrator access once to install a device rule for the two RGB
+4. Enables a user service that restores the lights after suspend.
+5. Requests administrator access once to install a device rule for the two RGB
    controllers.
-5. Applies the current Omarchy theme color.
+6. Applies the current Omarchy theme color.
 
 Run the installer as your normal desktop user. Do not prefix it with `sudo`.
 It uses `sudo` only for the device rule and asks for your password there. Use
@@ -39,8 +40,9 @@ It uses `sudo` only for the device rule and asks for your password there. Use
 to install without changing the current lights.
 
 Requirements are checked before installation: Python 3, GTK 4/PyGObject,
-hidapi-hidraw, Omarchy, `install`, and `sudo` unless `--no-udev` is used. The
-required components are already present on the laptop used to build this.
+hidapi-hidraw, Omarchy, D-Bus tools, systemd, `install`, and `sudo` unless
+`--no-udev` is used. The required components are already present on the laptop
+used to build this.
 
 ## Use
 
@@ -86,9 +88,14 @@ The integration uses Omarchy's supported user hooks:
 - `~/.config/omarchy/hooks/theme-set.d/90-alienware-lights`
 - `~/.config/omarchy/hooks/post-boot.d/90-alienware-lights`
 
-It does not modify `/usr/share/omarchy`, run a continuous background service,
-or save a startup effect into the laptop firmware. Theme and manual operations
-share a lock so their hardware reports cannot interleave.
+The laptop firmware turns the rear light bar off during suspend. The managed
+`alienware-lights-resume.service` listens for the system wake event, waits
+briefly for the USB controllers, and reapplies the current Omarchy theme color.
+Its actions use the same `alienware-lights` journal tag as the user hooks.
+
+It does not modify `/usr/share/omarchy` or save a startup effect into the laptop
+firmware. Theme and manual operations share a lock so their hardware reports
+cannot interleave.
 
 To pause automatic synchronization, create
 `~/.config/omarchy/alienware-lights.json` containing:
@@ -122,11 +129,12 @@ currently verified device nodes.
 alienlights-uninstall
 ```
 
-The uninstaller removes the app, launchers, and the two managed Omarchy hooks.
-It asks for administrator access to remove the device rule only when that file
-still matches this installation. It leaves changed or unrelated rule files
-alone. Current LED colors remain until another command or hardware reset changes
-them. The uninstaller also removes the locally remembered color.
+The uninstaller removes the app, launchers, the two managed Omarchy hooks, and
+the resume service. It asks for administrator access to remove the device rule
+only when that file still matches this installation. It leaves changed or
+unrelated system files alone. Current LED colors remain until another command
+or hardware reset changes them. The uninstaller also removes the locally
+remembered color.
 
 ## Troubleshooting
 
