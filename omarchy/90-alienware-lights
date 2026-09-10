@@ -1,0 +1,6 @@
+#!/bin/bash
+# Managed by Alienware Lights installer.
+# Installed in Omarchy's theme-set.d and post-boot.d directories.
+# Always use the current staged theme, not the possibly stale event argument.
+"$HOME/.local/bin/alienlights-theme-sync" --automatic 2>&1 |
+  /usr/bin/logger -t alienware-lights

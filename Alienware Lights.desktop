@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Alienware Lights
+Comment=Set one color across your Alienware laptop
+Exec=alienware-lights-gui
+Icon=preferences-color
+Terminal=false
+Categories=Utility;

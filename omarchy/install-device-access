@@ -1,0 +1,25 @@
+#!/bin/bash
+set -euo pipefail
+if (( EUID != 0 )); then
+  echo "Run this helper through sudo." >&2
+  exit 1
+fi
+source_rule=${1:?Usage: install-device-access SOURCE_RULE}
+target_rule=/etc/udev/rules.d/70-alienware-lights.rules
+if [[ -e "$target_rule" ]] && ! cmp -s "$source_rule" "$target_rule"; then
+  echo "A different $target_rule already exists; refusing to overwrite it." >&2
+  exit 1
+fi
+/usr/bin/install -o root -g root -m 0644 "$source_rule" "$target_rule"
+/usr/bin/udevadm control --reload-rules
+for node in /sys/class/hidraw/hidraw*; do
+  [[ -f "$node/device/uevent" ]] || continue
+  identity=$(sed -n 's/^HID_ID=//p' "$node/device/uevent")
+  case "$identity" in
+    0003:0000187C:00000551|0003:00000D62:00001BBC)
+      /usr/bin/udevadm trigger --action=change "$node"
+      ;;
+  esac
+done
+/usr/bin/udevadm settle --timeout=10
+echo "Persistent access installed for the two Alienware lighting controllers."

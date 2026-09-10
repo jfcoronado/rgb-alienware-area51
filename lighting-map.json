@@ -1,0 +1,179 @@
+{
+  "model": "Alienware 16 Area-51 AA16250",
+  "controller": "187c:0551",
+  "orientation": "Bar order runs from the first red end in the mapping photos toward the isolated blue tip. Fan left/right is from typing position.",
+  "bar_groups": [
+    {
+      "ids": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "verification": "group colors visually confirmed; individual IDs not isolated"
+    },
+    {
+      "ids": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "verification": "group colors visually confirmed; individual IDs not isolated"
+    },
+    {
+      "ids": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "verification": "group colors visually confirmed; individual IDs not isolated"
+    },
+    {
+      "ids": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "verification": "group colors visually confirmed; individual IDs not isolated"
+    },
+    {
+      "ids": [
+        16,
+        17,
+        18,
+        19
+      ],
+      "verification": "group colors visually confirmed; individual IDs not isolated"
+    },
+    {
+      "ids": [
+        20,
+        21,
+        22,
+        23
+      ],
+      "verification": "group colors visually confirmed; individual IDs not isolated"
+    }
+  ],
+  "individual_lights": {
+    "24": {
+      "name": "Rear bar near terminal tip",
+      "verification": "Isolated red alongside ID 26 blue; visible pink/red inward from tip due to diffusion"
+    },
+    "25": {
+      "name": "Rear bar near terminal tip",
+      "verification": "Confirmed alone in green with other candidate bar IDs off"
+    },
+    "26": {
+      "name": "Rear bar outermost terminal tip",
+      "verification": "Isolated blue alongside ID 24 red"
+    },
+    "27": {
+      "name": "Power-button lighting",
+      "verification": "User confirmed white in detailed mapping"
+    },
+    "28": {
+      "name": "Lid logo",
+      "verification": "User confirmed red in detailed mapping"
+    },
+    "29": {
+      "name": "Right fan lighting",
+      "verification": "User confirmed green in detailed mapping"
+    },
+    "30": {
+      "name": "Left fan lighting",
+      "verification": "User confirmed blue in detailed mapping"
+    },
+    "31": {
+      "name": "Trackpad left-side lighting",
+      "verification": "User confirmed and photographed isolated green illumination concentrated on the left side; diffuser boundaries approximate"
+    },
+    "32": {
+      "name": "Trackpad keyboard-side edge light 2",
+      "verification": "Photo shows red in the sequence after ID 31 from the left; light diffuses over the surface, exact boundaries approximate"
+    },
+    "33": {
+      "name": "Trackpad keyboard-side edge light 3",
+      "verification": "Photo shows blue in the sequence after ID 31 from the left; light diffuses over the surface, exact boundaries approximate"
+    },
+    "34": {
+      "name": "Trackpad keyboard-side edge light 4",
+      "verification": "Photo shows white in the sequence after ID 31 from the left; light diffuses over the surface, exact boundaries approximate"
+    },
+    "35": {
+      "name": "Trackpad keyboard-side edge light 5",
+      "verification": "Isolated group photo confirms red, continuing left to right from the middle toward the right; diffuser boundaries approximate"
+    },
+    "36": {
+      "name": "Trackpad keyboard-side edge light 6",
+      "verification": "Isolated group photo confirms green, continuing left to right from the middle toward the right; diffuser boundaries approximate"
+    },
+    "37": {
+      "name": "Trackpad keyboard-side edge light 7",
+      "verification": "Isolated group photo confirms blue, continuing left to right from the middle toward the right; diffuser boundaries approximate"
+    },
+    "38": {
+      "name": "Trackpad keyboard-side edge light 8",
+      "verification": "Isolated group photo confirms white, continuing left to right from the middle toward the right; diffuser boundaries approximate"
+    },
+    "39": {
+      "name": "Trackpad keyboard-side edge, near right corner",
+      "verification": "Red in user photo, immediately left of green ID 40"
+    },
+    "40": {
+      "name": "Trackpad keyboard-side right corner",
+      "verification": "Green at right corner in user photo"
+    },
+    "1": {
+      "name": "Rear bar first-end section",
+      "verification": "Photo after restart with ID 0 red and ID 1 green, all other bar IDs off, shows green at the first end. Earlier no-change observation superseded by this visible result."
+    },
+    "0": {
+      "name": "Rear bar first-end lighting",
+      "verification": "Photo shows red with only ID 0 set red and IDs 1\u201326 off. Active control confirmed; precise boundary relative to ID 1 unresolved due to diffusion."
+    }
+  },
+  "unassigned_ids": [],
+  "keyboard": {
+    "controller": "0d62:1bbc",
+    "global_static_color": "confirmed",
+    "verification": "User confirmed every key changed after a solid-red API v5 global static-effect command",
+    "individual_keys": "not mapped"
+  },
+  "limitations": [
+    "IDs 0\u201323 mapped in groups, not all individually verified active.",
+    "Light diffusion prevents precise physical segment boundaries.",
+    "No persistent hardware saves tested."
+  ],
+  "pending_test": {
+    "ids": {
+      "2": "red",
+      "3": "blue"
+    },
+    "purpose": "Isolate next two rear-bar controls; IDs 0/1 and 4\u201326 off"
+  },
+  "no_visible_effect": {
+    "41": "User saw no light while set blue with known chassis lights off",
+    "42": "User saw no light while set white with known chassis lights off"
+  },
+  "trackpad": {
+    "ids": [
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40
+    ],
+    "order": "Left to right along keyboard-side edge, viewed from typing position",
+    "verification": "All ten identified by colored photo tests; light diffuses over trackpad surface"
+  },
+  "bar_start_observation": "Photo with 0 red, 1 green, 2 blue, 3 white shows blue/cyan near the first end. ID 2 likely active; ID 3 white not separately resolved. IDs 0/1 require isolation."
+}

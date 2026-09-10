@@ -1,0 +1,15 @@
+# Python-generated files
+__pycache__/
+*.py[cod]
+
+# Local runtime state and locks
+.last-color.json
+.lighting.lock
+.theme-sync.lock
+
+# Editor and operating-system files
+.idea/
+.vscode/
+*~
+.DS_Store
+
